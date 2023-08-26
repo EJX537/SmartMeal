@@ -1,0 +1,755 @@
+#
+#   API for SmartMeals
+#
+
+openapi: "3.0.3"
+
+info:
+  description: backend
+  version: 0.1.0
+  title: SmartMeals
+
+servers:
+  - url: http://localhost:3010/v0
+
+paths:
+  /diets:
+    get:
+      description: returns the available diet filters
+      parameters:
+        - in: query
+          name: mealsid
+          schema:
+            type: string
+          required: true
+          description: the id of the user
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tags'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      description: returns the available diet filters
+      requestBody:
+        description: userid and the diet being updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dietUpdate'
+      responses:
+        201:
+          description: updated user
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /switchOut:
+    get:
+      description: returns subsitutions given ingredient
+      parameters:
+        - in: query
+          name: ingredient
+          schema:
+            type: string
+          required: true
+          description: ingredient to check swaps of
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/swap'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /publicMeal:
+    get:
+      description: returns user query
+      parameters:
+        - in: query
+          name: mealName
+          schema:
+            type: string
+          description: what the user gives
+        - in: query
+          name: public
+          schema:
+            type: boolean
+          description: public or private
+        - in: query
+          name: mealsid
+          schema:
+            type: string
+          description: mealsid for private
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recipes'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /userSearch:
+    get:
+      description: returns user query
+      parameters:
+        - in: query
+          name: userInput
+          schema:
+            type: string
+          required: true
+          description: what the user gives
+        - in: query
+          name: userid
+          schema:
+            type: integer
+          required: true
+          description: userid so we can check the tags for query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/returnMeal'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /mealWeek:
+    get:
+      description: returns full week of food
+      parameters:
+        - in: query
+          name: mealsid
+          schema:
+            type: integer
+          required: true
+          description: mealsid
+        - in: query
+          name: dayof
+          schema:
+            type: string
+          required: true
+          description: day
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/putMealToUser'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+  /login:
+    post:
+      description: login
+      requestBody:
+        description: Request Body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credentials'
+      responses:
+        200:
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /signup:
+    post:
+      description: signup
+      requestBody:
+        description: Request Body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credentials'
+      responses:
+        201:
+          description: created response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /recipe:
+    get:
+      security:
+        - bearerAuth: []
+      description: returns one recipe
+      parameters:
+        - in: query
+          name: recipeid
+          schema:
+            type: string
+          required: true
+          description: returns one recipe
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recipe'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: not found
+          
+  /mealName:
+    put:
+      security:
+        - bearerAuth: []
+      description: Update mealPlan Name
+      requestBody:
+        description: userid, mealplanName, firstday
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/mealNameUp'
+      responses:
+        201:
+          description: updated mealName
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mealNameUp'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /recipes:
+    get:
+      security:
+        - bearerAuth: []
+      description: returns all recipes
+      parameters:
+        - in: query
+          name: mealsid
+          schema:
+            type: integer
+          required: true
+          description: the id of the user
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recipes'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      description: creates a recipe
+      requestBody:
+        description: recipe to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/recipesPost'
+      responses:
+        201:
+          description: recipe to create
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recipesJson'
+        400:
+          description: invalid recipe
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /meals:
+    post:
+      security:
+        - bearerAuth: []
+      description: add a meal to a user with date and userid
+      requestBody:
+        description: userid date lunch dinner or breakfast
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createMeal'
+      responses:
+        201:
+          description: created meal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createMeal'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      security:
+        - bearerAuth: []
+      description: Update meal for user
+      requestBody:
+        description: userid date lunch dinner or breakfast
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/putMealToUser'
+      responses:
+        201:
+          description: uodated meal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/putMealToUser'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      security:
+        - bearerAuth: []
+      description: retrieve meals that should be displayed on that date
+      parameters:
+        - in: query
+          name: dayof
+          schema:
+            type: string
+          required: true
+          description: day
+        - in: query
+          name: mealsid
+          schema:
+            type: integer
+          required: true
+          description: mealsid
+        - in: query
+          name: firstDay
+          schema:
+            type: string
+          required: false
+          description: first day of that week
+
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/putMealToUser'
+        404:
+          description: wrong date
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /ingredients:
+    get:
+      description: returns food group
+      parameters:
+        - name: ingredient
+          in: query
+          schema:
+            type: string
+          required: true
+          description: ingredient name
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ingredientList'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /allIngredients:
+    get:
+      description: returns all ingredients
+      parameters:
+        - in: query
+          name: diet
+          schema:
+            type: string
+          required: false
+          description: diet name
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ingredientList'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /groceryList:
+    get:
+      security:
+        - bearerAuth: []
+      description: retrieve meals that should be displayed on that date
+      parameters:
+        - in: query
+          name: mealsid
+          schema:
+            type: integer
+          required: true
+          description: mealsid
+        - in: query
+          name: firstDay
+          schema:
+            type: string
+          required: false
+          description: first day of that week
+
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/putMealToUser'
+        404:
+          description: wrong date
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        201:
+          description: created checklist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createCheckList'
+
+    put:
+      security:
+        - bearerAuth: []
+      description: Update an ingredient as checked
+      requestBody:
+        description: mealsid, firstday, ingredient to check
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/putGroceryList'
+      responses:
+        201:
+          description: updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/putGroceryList'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+components:
+  schemas:
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    recipes:
+      items:
+        $ref: '#/components/schemas/recipesJson'
+    createCheckList:
+      properties:
+        firstDay:
+          type: string
+        mealsid:
+          type: integer
+        checklist:
+          type: string
+
+    recipe:
+      properties:
+        recipeid:
+          type: integer
+        dishname:
+          type: string
+        ingredients:
+          type: array
+          items:
+            type: string
+          example: ["str1", "str2", "str3"]
+        ingredientAm:
+          type: integer
+        imageData:
+          type: string
+        vegan:
+          type: boolean
+        halal:
+          type: boolean
+        healthy:
+          type: boolean
+        kosher:
+          type: boolean
+
+    recipesPost:
+      properties:
+#        recipeid:
+#          type: integer
+        dishname:
+          type: string
+        ingredients:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          example: [["egg", "1", "N/A"], ["bacon", "1", "g"], ["cheese", "1", "g"]]
+        ingredientAm:
+          type: integer
+        imageData:
+          type: string
+        vegan:
+          type: boolean
+        halal:
+          type: boolean
+        healthy:
+          type: boolean
+        kosher:
+          type: boolean
+
+    recipesJson:
+      properties:
+        recipeid:
+          type: integer
+#        dishname:
+#          type: string
+#        ingredients:
+#          type: object
+#          items:
+#            type: string
+#        ingredientAm:
+#          type: integer
+#        imageData:
+#          type: string
+#        vegan:
+#          type: boolean
+#        halal:
+#          type: boolean
+#        healthy:
+#          type: boolean
+#        kosher:
+#          type: boolean
+
+    putMealToUser:
+      properties:
+        mealsid:
+          type: integer
+        dayof:
+          type: string
+        changes:
+          type: string
+        firstDay:
+          type: string
+    putGroceryList:
+      properties:
+        firstDay:
+          type: string
+        mealsid:
+          type: integer
+        category:
+          type: string
+        ingredient:
+          type: string
+        check:
+          type: boolean
+
+    putMealToUserNew:
+      properties:
+        dayof:
+          type: string
+        changes:
+          type: string
+
+    createMeal:
+      properties:
+        firstDay:
+          type: string
+        mealsid:
+          type: integer
+
+
+    Credentials:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+        accessToken:
+          type: string
+      required:
+        - name
+        - accessToken
+
+    swap:
+      properties:
+        ingredients:
+          type: string
+        tradeFor:
+          type: array
+          items:
+            type: string
+          example: ["str1", "str2", "str3"]
+        veganAlternative:
+          type: array
+          items:
+            type: string
+          example: ["str1", "str2", "str3"]
+
+
+    returnMeal:
+      properties:
+        firstDay:
+          type: string
+        mealName:
+          type: string
+        public:
+          type: string
+        mealWeek:
+          type: string
+        mealsid:
+          type: integer
+
+    mealNameUp:
+      properties:
+        firstDay:
+          type: string
+        mealsid:
+          type: integer
+        mealName:
+          type: string
+
+    tags:
+      type: object
+
+    ingredientList:
+      items:
+        $ref: '#/components/schemas/ingredients'
+
+    ingredients:
+      properties:
+        name:
+          type: string
+
+    dietUpdate:
+      properties:
+        mealsid:
+          type: integer
+        dietTag:
+          type: string
+        newValue:
+          type: boolean
+
+
+
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes

@@ -1,0 +1,66 @@
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 0px;
+}
+
+@media (max-width: 600px) {
+    ::-webkit-scrollbar:horizontal{
+        display: none;
+    }
+}
+
+@media (min-width: 600px) {
+
+    ::-webkit-scrollbar:horizontal{
+        height: 7px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background-color: rgba(0, 0, 0, .2);
+      -webkit-box-shadow: 0 0 0.8px rgba(255, 255, 255, .5);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      border-radius: 4px;
+      background-color: rgba(0, 0, 0, .5);
+      -webkit-box-shadow: 0 0 0.8px rgba(255, 255, 255, .5);
+    }
+}
+
+
+.margins {
+    margin: 0;
+}
+
+#wrapping {
+    flex-wrap: nowrap !important;
+}
+
+.stretch {
+    flex: 1;
+}
+
+#planName {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-weight: bold;
+}
+
+#titleBar {
+    background-color: #bfd1e3;
+    float: right;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+}
+
+#homepage {
+    background-color: #f3f1fa;
+    height: 100vh;
+}

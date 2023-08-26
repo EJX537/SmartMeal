@@ -1,0 +1,45 @@
+@media (max-width: 599px) {
+    .clearBtn {
+        display: none !important;
+    }
+
+    .verticalDiv {
+        display: none !important;
+    }
+}
+
+.tools {
+    background-color: #bfd1e3;
+    height: 50px;
+    margin-top: 4px;
+    padding: 0 !important;
+    float: right;
+    width: 100%;
+}
+
+#search {
+    width: 100%;
+}
+
+#cancelSearch {
+    z-index: 10;
+    right: 0px;
+    position: absolute;
+}
+
+.searchInput {
+    width: 100%;
+    font-size: 20px;
+}
+
+.verticalDiv {
+    margin-left: 4px !important;
+}
+
+.splitGrid {
+    width: 50% !important;
+}
+
+.filtering {
+    flex-wrap: nowrap !important;
+}

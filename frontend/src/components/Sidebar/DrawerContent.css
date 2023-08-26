@@ -1,0 +1,18 @@
+.bottomBtns {
+    position: absolute !important;
+    bottom: 0;
+    display: block !important;
+    width: 100%;
+}
+
+.options {
+    height: 100%;
+}
+
+.pages {
+    height: 50%;
+}
+
+.sidebarLink {
+    text-decoration: none;
+}

@@ -1,0 +1,39 @@
+.menu {
+    display: flex !important;
+    overflow-x: scroll;
+    flex-wrap: nowrap;
+    height: 100%;
+    padding: 0;
+    padding-left: 5px;
+    padding-top: 5px;
+    margin: 0;
+}
+
+#btnList {
+    padding: 10px;
+    width: 60px;
+    float: right;
+}
+
+.btn {
+    width: 50px !important;
+    height: 50px !important;
+}
+
+.selected {
+    opacity: 50%;
+}
+
+.unselected {
+    opacity: 101%;
+}
+
+.hiddenScrollbar::-webkit-scrollbar:horizontal{
+    -webkit-appearance: none;
+    height: 0;
+    display: none;
+}
+
+.menus {
+    padding: 0 !important;
+}
